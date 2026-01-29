@@ -20,7 +20,7 @@ app.get('/shoppingonline', (req, res) => {
 
 // Mount API admin
 const adminRouter = require('./api/admin');
-app.use('/api/admin', adminRouter);
+app.use('/api/admin', require('./api/admin.js'))
 
 // Kết nối MongoDB (giả sử bạn đã có phần này ở file khác)
 require('./utils/MongooseUtil');  // nếu dùng file riêng

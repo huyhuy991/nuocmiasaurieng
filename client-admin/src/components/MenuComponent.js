@@ -11,7 +11,7 @@ class Menu extends Component {
         <div className="float-left">
           <ul className="menu">
             <li className="menu"><Link to="/admin/home">Home</Link></li>
-            <li className="menu"><Link to="">Category</Link></li>
+            <li className="menu"><Link to="/admin/category">Category</Link></li>
             <li className="menu"><Link to="">Product</Link></li>
             <li className="menu"><Link to="">Order</Link></li>
             <li className="menu"><Link to="">Customer</Link></li>

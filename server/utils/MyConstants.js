@@ -5,7 +5,7 @@ const MyConstants = {
   DB_DATABASE: 'shoppingonline',
   EMAIL_USER: 'huytran42nbk@gmail.com', // Microsoft mail service
   EMAIL_PASS: '0914855900',
-  JWT_SECRET: '0947855900',
+  JWT_SECRET: '3e52a94647a0be1e562e2639a830a36976496ddf71923da6ffb7386a09406e35de95168f335b14f9f7a04424d730e3bd51739b910ed9ac0eb6144034dbcc3dc0',
   JWT_EXPIRES: '3600000', // in milliseconds
 };
 
