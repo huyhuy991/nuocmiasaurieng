@@ -1,30 +1,16 @@
-// CLI: npm install axios --save
-import axios from 'axios';
-import React, { Component } from 'react';
+import "./App.css";
+import React, { Component } from "react";
+import Main from "./components/MainComponent";
+// THÊM DÒNG NÀY: Import BrowserRouter
+import { BrowserRouter } from "react-router-dom";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      message: 'Loading...'
-    };
-  }
-
-  componentDidMount() {
-    axios.get('http://127.0.0.1:3000/shoppingonline').then((res) => {
-      const result = res.data;
-      this.setState({ message: result.message });
-    });
-  }
-
   render() {
     return (
-      <div>
-        <h1>Customer page</h1>
-        <p>{this.state.message}</p>
-      </div>
+      <BrowserRouter>
+        <Main />
+      </BrowserRouter>
     );
   }
 }
-
 export default App;
