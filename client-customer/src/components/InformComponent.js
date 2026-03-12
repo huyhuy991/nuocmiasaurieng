@@ -1,23 +1,41 @@
-import React, { Component } from "react";
-// THÊM DÒNG NÀY: Import thư viện Link
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import MyContext from '../contexts/MyContext';
 
 class Inform extends Component {
+  static contextType = MyContext; // using this.context to access global state
+
   render() {
     return (
       <div className="border-bottom">
         <div className="float-left">
-          {/* SỬA ĐOẠN NÀY: Thay các thẻ <a> thành thẻ <Link> */}
-          <Link to="">Login</Link> | <Link to="">Sign-up</Link> |{" "}
-          <Link to="">Active</Link>
+          {this.context.token === '' ? (
+            <div>
+              <Link to='/login'>Login</Link> | <Link to='/signup'>Sign-up</Link> | <Link to='/active'>Active</Link>
+            </div>
+          ) : (
+            <div>
+              Hello <b>{this.context.customer.name}</b> | 
+              <Link to='/home' onClick={() => this.lnkLogoutClick()}>Logout</Link> | 
+              {/* Cập nhật đường dẫn đến trang hồ sơ cá nhân */}
+              <Link to='/myprofile'>My profile</Link> | 
+              <Link to='/myorders'>My orders</Link>
+            </div>
+          )}
         </div>
         <div className="float-right">
-          {/* SỬA ĐOẠN NÀY: Thay thẻ <a> thành thẻ <Link> */}
-          <Link to="">My cart</Link> have <b>0</b> items
+          <Link to='/mycart'>My cart</Link> have <b>0</b> items
         </div>
         <div className="float-clear" />
       </div>
     );
   }
+
+  // event-handlers
+  lnkLogoutClick() {
+    this.context.setToken('');
+    this.context.setCustomer(null);
+  }
 }
+
 export default Inform;

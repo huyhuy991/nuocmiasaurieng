@@ -4,8 +4,12 @@ import Menu from "./MenuComponent";
 import Inform from "./InformComponent";
 import Home from "./HomeComponent";
 import Product from "./ProductComponent";
-// BẮT BUỘC: Bạn phải thêm dòng import này
 import ProductDetail from "./ProductDetailComponent"; 
+import Signup from './SignupComponent';
+import Active from './ActiveComponent'; 
+import Login from './LoginComponent'; 
+// Import trang hồ sơ cá nhân
+import Myprofile from './MyprofileComponent'; 
 
 class Main extends Component {
   render() {
@@ -18,12 +22,19 @@ class Main extends Component {
           <Route path="/" element={<Navigate replace to="/home" />} />
           <Route path="/home" element={<Home />} />
           <Route path="/product/category/:cid" element={<Product />} />
-          {/* Route chi tiết phải khớp với tham số :id bạn lấy trong ProductDetail */}
+          {/* Route chi tiết nhận tham số :id từ URL */}
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/product/search/:keyword" element={<Product />} />
+          {/* Cấu hình đường dẫn cho các trang chức năng */}
+          <Route path='/signup' element={<Signup />} />
+          <Route path='/active' element={<Active />} />
+          <Route path='/login' element={<Login />} />
+          {/* Bổ sung Route cho trang My Profile */}
+          <Route path='/myprofile' element={<Myprofile />} />
         </Routes>
       </div>
     );
   }
 }
+
 export default Main;
