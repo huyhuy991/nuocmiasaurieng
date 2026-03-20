@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import MyContext from '../contexts/MyContext';
 
 class Inform extends Component {
-  static contextType = MyContext; // using this.context to access global state
+  static contextType = MyContext; // sử dụng this.context để truy cập global state
 
   render() {
     return (
@@ -17,14 +17,14 @@ class Inform extends Component {
             <div>
               Hello <b>{this.context.customer.name}</b> | 
               <Link to='/home' onClick={() => this.lnkLogoutClick()}>Logout</Link> | 
-              {/* Cập nhật đường dẫn đến trang hồ sơ cá nhân */}
               <Link to='/myprofile'>My profile</Link> | 
+              {/* Cập nhật đường dẫn đến trang đơn hàng của tôi */}
               <Link to='/myorders'>My orders</Link>
             </div>
           )}
         </div>
         <div className="float-right">
-          <Link to='/mycart'>My cart</Link> have <b>0</b> items
+          <Link to='/mycart'>My cart</Link> have <b>{this.context.mycart.length}</b> items
         </div>
         <div className="float-clear" />
       </div>
@@ -35,6 +35,8 @@ class Inform extends Component {
   lnkLogoutClick() {
     this.context.setToken('');
     this.context.setCustomer(null);
+    // Xóa sạch giỏ hàng khi khách hàng đăng xuất để đảm bảo tính riêng tư
+    this.context.setMycart([]); 
   }
 }
 

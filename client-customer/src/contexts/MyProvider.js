@@ -8,9 +8,11 @@ class MyProvider extends Component {
       // variables
       token: '',
       customer: null,
+      mycart: [], // Khởi tạo giỏ hàng trống
       // functions
       setToken: this.setToken,
-      setCustomer: this.setCustomer
+      setCustomer: this.setCustomer,
+      setMycart: this.setMycart // Đăng ký hàm cập nhật giỏ hàng
     };
   }
 
@@ -20,6 +22,11 @@ class MyProvider extends Component {
 
   setCustomer = (value) => {
     this.setState({ customer: value });
+  };
+
+  // Hàm cập nhật giỏ hàng
+  setMycart = (value) => {
+    this.setState({ mycart: value });
   };
 
   render() {

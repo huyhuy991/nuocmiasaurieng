@@ -8,8 +8,10 @@ import ProductDetail from "./ProductDetailComponent";
 import Signup from './SignupComponent';
 import Active from './ActiveComponent'; 
 import Login from './LoginComponent'; 
-// Import trang hồ sơ cá nhân
 import Myprofile from './MyprofileComponent'; 
+import Mycart from './MycartComponent'; 
+// Import trang lịch sử đơn hàng
+import Myorders from './MyordersComponent'; 
 
 class Main extends Component {
   render() {
@@ -25,12 +27,16 @@ class Main extends Component {
           {/* Route chi tiết nhận tham số :id từ URL */}
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/product/search/:keyword" element={<Product />} />
-          {/* Cấu hình đường dẫn cho các trang chức năng */}
+          
+          {/* Cấu hình đường dẫn cho các trang chức năng khách hàng */}
           <Route path='/signup' element={<Signup />} />
           <Route path='/active' element={<Active />} />
           <Route path='/login' element={<Login />} />
-          {/* Bổ sung Route cho trang My Profile */}
           <Route path='/myprofile' element={<Myprofile />} />
+          <Route path='/mycart' element={<Mycart />} />
+          
+          {/* Bổ sung Route cho trang Lịch sử đơn hàng */}
+          <Route path='/myorders' element={<Myorders />} />
         </Routes>
       </div>
     );

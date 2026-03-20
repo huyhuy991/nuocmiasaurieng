@@ -10,44 +10,37 @@ const JwtUtil = require('../utils/JwtUtil');
 const CategoryDAO = require("../models/CategoryDAO");
 const ProductDAO = require("../models/ProductDAO");
 const CustomerDAO = require("../models/CustomerDAO");
+const OrderDAO = require('../models/OrderDAO');
 
 // --- CATEGORY ---
-
-// 1. Lấy danh sách danh mục (cho Menu)
 router.get("/categories", async function (req, res) {
   const categories = await CategoryDAO.selectAll();
   res.json(categories);
 });
 
 // --- PRODUCT ---
-
-// 2. Lấy Top 3 sản phẩm mới
 router.get("/products/new", async function (req, res) {
   const products = await ProductDAO.selectTopNew(3);
   res.json(products);
 });
 
-// 3. Lấy Top 3 sản phẩm Hot (bán chạy)
 router.get("/products/hot", async function (req, res) {
   const products = await ProductDAO.selectTopHot(3);
   res.json(products);
 });
 
-// 4. API lấy sản phẩm theo ID Danh mục
 router.get("/products/category/:cid", async function (req, res) {
   const _cid = req.params.cid;
   const products = await ProductDAO.selectByCatID(_cid);
   res.json(products);
 });
 
-// 5. API tìm kiếm sản phẩm theo từ khóa
 router.get("/products/search/:keyword", async function (req, res) {
   const keyword = req.params.keyword;
   const products = await ProductDAO.selectByKeyword(keyword);
   res.json(products);
 });
 
-// 6. API lấy chi tiết một sản phẩm theo ID
 router.get("/products/:id", async function (req, res) {
   const _id = req.params.id;
   const product = await ProductDAO.selectByID(_id);
@@ -115,6 +108,27 @@ router.put('/customers/:id', JwtUtil.checkToken, async function (req, res) {
   const { username, password, name, phone, email } = req.body;
   const customer = { _id, username, password, name, phone, email };
   const result = await CustomerDAO.update(customer);
+  res.json(result);
+});
+
+// --- MYORDERS ---
+
+// API lấy danh sách đơn hàng theo khách hàng
+router.get('/orders/customer/:cid', JwtUtil.checkToken, async function (req, res) {
+  const _cid = req.params.cid;
+  const orders = await OrderDAO.selectByCustID(_cid);
+  res.json(orders);
+});
+
+// API Đặt hàng (Checkout)
+router.post('/checkout', JwtUtil.checkToken, async function (req, res) {
+  const now = new Date().getTime(); 
+  const total = req.body.total;
+  const items = req.body.items;
+  const customer = req.body.customer;
+  const order = { cdate: now, total: total, status: 'PENDING', customer: customer, items: items };
+  
+  const result = await OrderDAO.insert(order);
   res.json(result);
 });
 
