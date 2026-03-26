@@ -6,6 +6,9 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Category from "./CategoryComponent";
 import Product from "./ProductComponent";
 import Order from "./OrderComponent";
+// Import trang quản lý khách hàng
+import Customer from './CustomerComponent';
+
 class Main extends Component {
   static contextType = MyContext;
 
@@ -20,10 +23,11 @@ class Main extends Component {
               element={<Navigate replace to="/admin/home" />}
             />
             <Route path="/admin/home" element={<Home />} />
-            <Route path="/admin/category" element={<Category />} />{" "}
-            <Route path="/admin/product" element={<Product />} />{" "}
-            {/* --- THÊM DÒNG NÀY VÀO ĐÂY: --- */}
+            <Route path="/admin/category" element={<Category />} />
+            <Route path="/admin/product" element={<Product />} />
             <Route path="/admin/order" element={<Order />} />
+            {/* Bổ sung Route cho trang khách hàng */}
+            <Route path="/admin/customer" element={<Customer />} />
           </Routes>
         </div>
       );
@@ -31,4 +35,5 @@ class Main extends Component {
     return <div />;
   }
 }
+
 export default Main;

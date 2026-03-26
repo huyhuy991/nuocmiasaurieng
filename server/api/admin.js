@@ -4,9 +4,14 @@ const express = require("express");
 const router = express.Router();
 // utils
 const JwtUtil = require("../utils/JwtUtil");
+// THÊM EMAILUTIL THEO ẢNH
+const EmailUtil = require('../utils/EmailUtil');
+
 // daos
 const AdminDAO = require("../models/AdminDAO");
 const OrderDAO = require("../models/OrderDAO");
+// THÊM CUSTOMERDAO THEO ẢNH
+const CustomerDAO = require('../models/CustomerDAO');
 
 // login
 router.post("/login", async function (req, res) {
@@ -63,7 +68,7 @@ router.delete("/categories/:id", JwtUtil.checkToken, async function (req, res) {
   const result = await CategoryDAO.delete(_id);
   res.json(result);
 });
-module.exports = router;
+
 // product
 router.get("/products", JwtUtil.checkToken, async function (req, res) {
   // 1. Lấy toàn bộ danh sách sản phẩm từ DB
@@ -131,19 +136,60 @@ router.delete("/products/:id", JwtUtil.checkToken, async function (req, res) {
   const result = await ProductDAO.delete(_id);
   res.json(result);
 });
+
+// customer
+router.get('/customers', JwtUtil.checkToken, async function (req, res) {
+  const customers = await CustomerDAO.selectAll();
+  res.json(customers);
+});
+
+// THÊM ROUTE SENDMAIL THEO ẢNH
+router.get('/customers/sendmail/:id', JwtUtil.checkToken, async function (req, res) {
+  const _id = req.params.id;
+  const cust = await CustomerDAO.selectByID(_id);
+  if (cust) {
+    const send = await EmailUtil.send(cust.email, cust._id, cust.token);
+    if (send) {
+      res.json({ success: true, message: 'Please check email' });
+    } else {
+      res.json({ success: false, message: 'Email failure' });
+    }
+  } else {
+    res.json({ success: false, message: 'Not exists customer' });
+  }
+});
+
+// THÊM ROUTE DEACTIVE THEO ẢNH
+router.put('/customers/deactive/:id', JwtUtil.checkToken, async function (req, res) {
+  const _id = req.params.id;
+  const token = req.body.token;
+  const result = await CustomerDAO.active(_id, token, 0);
+  res.json(result);
+});
+
 // --- order ---
 router.get("/orders", JwtUtil.checkToken, async function (req, res) {
   const orders = await OrderDAO.selectAll();
   res.json(orders);
 });
+
+// THÊM LẤY ĐƠN HÀNG THEO KHÁCH HÀNG
+router.get('/orders/customer/:cid', JwtUtil.checkToken, async function (req, res) {
+  const _cid = req.params.cid;
+  const orders = await OrderDAO.selectByCustID(_cid);
+  res.json(orders);
+});
+
 // Cập nhật trạng thái đơn hàng (Duyệt / Hủy)
 router.put("/orders/status/:id", JwtUtil.checkToken, async function (req, res) {
   const _id = req.params.id; // Lấy mã ID của đơn hàng từ URL
   const newStatus = req.body.status; // Lấy trạng thái mới (APPROVED hoặc CANCELED) từ dữ liệu gửi lên
 
   // Gọi hàm update của OrderDAO để lưu vào Database
-  const result = await OrderDAO.update(_id, newStatus);
+  const result = await OrderDAO.updateStatus(_id, newStatus);
 
   // Trả kết quả về cho React
   res.json(result);
 });
+
+module.exports = router;

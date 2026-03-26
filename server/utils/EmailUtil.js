@@ -1,9 +1,8 @@
-//CLI: npm install nodemailer--save
 const nodemailer = require('nodemailer');
 const MyConstants = require('./MyConstants');
 
 const transporter = nodemailer.createTransport({
-  service: 'hotmail',
+  service: 'gmail', // PHẢI ĐỔI THÀNH GMAIL
   auth: {
     user: MyConstants.EMAIL_USER,
     pass: MyConstants.EMAIL_PASS
@@ -12,9 +11,7 @@ const transporter = nodemailer.createTransport({
 
 const EmailUtil = {
   send(email, id, token) {
-    const text =
-      'Thanks for signing up, please input these informations to activate your account:\n\t .id: ' +
-      id + '\n\t .token: ' + token;
+    const text = 'Thanks for signing up, please input these informations to activate your account:\n\t .id: ' + id + '\n\t .token: ' + token;
 
     return new Promise(function (resolve, reject) {
       const mailOptions = {
@@ -25,8 +22,12 @@ const EmailUtil = {
       };
 
       transporter.sendMail(mailOptions, function (err, result) {
-        if (err) reject(err);
-        resolve(true);
+        if (err) {
+          console.error("CHI TIẾT LỖI GỬI MAIL:", err.message);
+          resolve(false); // Trả về false để server không sập
+        } else {
+          resolve(true);
+        }
       });
     });
   }
